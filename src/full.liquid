@@ -1,0 +1,28 @@
+<div class="layout layout--col layout--center gap--large">
+  <span class="title title--large">{{ temperature }}°C</span>
+  <span class="label">{{ condition }} · Feels like {{ feels_like }}°C</span>
+
+  <div class="columns gap--medium">
+    <div class="column">
+      <span class="label">High</span>
+      <span class="value">{{ high }}°C</span>
+    </div>
+    <div class="column">
+      <span class="label">Low</span>
+      <span class="value">{{ low }}°C</span>
+    </div>
+    <div class="column">
+      <span class="label">Humidity</span>
+      <span class="value">{{ humidity }}%</span>
+    </div>
+    <div class="column">
+      <span class="label">Wind</span>
+      <span class="value">{{ wind_speed }} km/h</span>
+    </div>
+  </div>
+</div>
+
+<div class="title_bar">
+  <span class="title">Weather</span>
+  <span class="instance">{{ location }}</span>
+</div>

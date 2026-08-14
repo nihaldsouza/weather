@@ -1,0 +1,17 @@
+#
+# Changes to this file will be overwritten by `trmnlp pull`.
+#
+# Docs: https://help.trmnl.com/en/articles/10542599-importing-and-exporting-private-plugins#h_581fb988f0
+#
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+framework_version: latest
+polling_url: https://api.open-meteo.com/v1/forecast?latitude=49.26636&longitude=-122.95263&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=America%2FVancouver&temperature_unit=celsius&wind_speed_unit=kmh&forecast_days=1
+polling_headers: ''
+name: Weather
+description: Weather for Burnaby, BC.
+refresh_interval: 30
