@@ -43,6 +43,20 @@ WMO_SHORT = {
     95: "Strm", 96: "Strm", 99: "Strm",
 }
 
+# Maps to icon names rendered by the `weather_icon` Liquid template (shared.liquid)
+WMO_ICON = {
+    0: "sun", 1: "sun", 2: "cloud-sun", 3: "cloud",
+    45: "fog", 48: "fog",
+    51: "cloud-drizzle", 53: "cloud-drizzle", 55: "cloud-drizzle",
+    56: "cloud-drizzle", 57: "cloud-drizzle",
+    61: "cloud-rain", 63: "cloud-rain", 65: "cloud-rain",
+    66: "cloud-rain", 67: "cloud-rain",
+    71: "cloud-snow", 73: "cloud-snow", 75: "cloud-snow", 77: "cloud-snow",
+    80: "cloud-rain", 81: "cloud-rain", 82: "cloud-rain",
+    85: "cloud-snow", 86: "cloud-snow",
+    95: "cloud-lightning", 96: "cloud-lightning", 99: "cloud-lightning",
+}
+
 
 def run(input):
     current = input["current"]
@@ -60,6 +74,7 @@ def run(input):
             "time": label,
             "temp": round(temp),
             "condition": WMO_SHORT.get(code, "—"),
+            "icon": WMO_ICON.get(code, "cloud"),
         })
 
     return {
@@ -69,6 +84,7 @@ def run(input):
         "humidity": current["relative_humidity_2m"],
         "wind_speed": round(current["wind_speed_10m"]),
         "condition": WMO_CONDITIONS.get(current["weather_code"], "Unknown"),
+        "icon": WMO_ICON.get(current["weather_code"], "cloud"),
         "high": round(daily["temperature_2m_max"][0]),
         "low": round(daily["temperature_2m_min"][0]),
         "hourly": upcoming,

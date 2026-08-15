@@ -1,17 +1,23 @@
 <div class="layout gap--medium">
-  <div class="columns layout--center">
+  <div class="columns layout--center gap--medium">
+    <div class="column w--auto">
+      {% render "weather_icon", icon: icon, size: 64 %}
+    </div>
     <div class="column">
       <span class="value text--xxlarge">{{ temperature }}°C</span>
       <span class="label">{{ condition }}</span>
-      <span class="label">H {{ high }}° L {{ low }}°</span>
+      <span class="label">H{{ high }}° L{{ low }}°</span>
     </div>
   </div>
 
   <div class="grid grid--cols-1 gap--small">
     {% for h in hourly %}
-    <div class="item">
-      <div class="content">
-        <span class="title title--small">{{ h.time }} · {{ h.condition }} · {{ h.temp }}°</span>
+    <div class="columns gap--small layout--center">
+      <div class="column w--auto">
+        {% render "weather_icon", icon: h.icon, size: 28 %}
+      </div>
+      <div class="column">
+        <span class="title title--small">{{ h.time }} · {{ h.temp }}°</span>
       </div>
     </div>
     {% endfor %}
