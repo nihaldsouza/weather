@@ -13,6 +13,7 @@
     {% for h in hourly %}
     <div class="item">
       <div class="content">
+        {% render "weather_bar", height: h.bar_height %}
         {% render "weather_icon", icon: h.icon, size: 24 %}
         <span class="title title--small">{{ h.time }}</span>
         <span class="description">{{ h.temp }}°</span>

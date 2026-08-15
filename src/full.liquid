@@ -1,10 +1,10 @@
-<div class="layout gap--large">
+<div class="layout gap--medium">
   <div class="columns gap--large">
     <div class="column w--auto">
-      {% render "weather_icon", icon: icon, size: 96 %}
+      {% render "weather_icon", icon: icon, size: 80 %}
     </div>
     <div class="column">
-      <span class="value text--mega">{{ temperature }}°C</span>
+      <span class="value text--xxxlarge">{{ temperature }}°C</span>
       <span class="label">{{ condition }} · Feels like {{ feels_like }}°C</span>
     </div>
   </div>
@@ -40,6 +40,7 @@
     {% for h in hourly %}
     <div class="item">
       <div class="content">
+        {% render "weather_bar", height: h.bar_height %}
         {% render "weather_icon", icon: h.icon, size: 32 %}
         <span class="title title--small">{{ h.time }}</span>
         <span class="description">{{ h.condition }} · {{ h.temp }}°</span>

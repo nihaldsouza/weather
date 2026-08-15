@@ -64,17 +64,27 @@ def run(input):
     hourly = input["hourly"]
 
     # hourly[0] is the current hour (already shown as "now"); take the next 4.
+    upcoming_temps = [round(t) for t in hourly["temperature_2m"][1:5]]
+    temp_min, temp_max = min(upcoming_temps), max(upcoming_temps)
+    temp_range = temp_max - temp_min or 1  # avoid div-by-zero when temps are flat
+    bar_min, bar_max = 6, 24  # px, for the quadrant hourly bar chart
+
     upcoming = []
     for time_str, temp, code in zip(
         hourly["time"][1:5], hourly["temperature_2m"][1:5], hourly["weather_code"][1:5]
     ):
         hour = datetime.strptime(time_str, "%Y-%m-%dT%H:%M")
         label = hour.strftime("%I %p").lstrip("0")
+        rounded_temp = round(temp)
+        bar_height = round(
+            bar_min + (rounded_temp - temp_min) / temp_range * (bar_max - bar_min)
+        )
         upcoming.append({
             "time": label,
-            "temp": round(temp),
+            "temp": rounded_temp,
             "condition": WMO_SHORT.get(code, "—"),
             "icon": WMO_ICON.get(code, "cloud"),
+            "bar_height": bar_height,
         })
 
     return {

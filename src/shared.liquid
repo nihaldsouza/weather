@@ -62,3 +62,9 @@
 </svg>
 {% endcase %}
 {% endtemplate %}
+
+{% template weather_bar %}
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="40" viewBox="0 0 16 40">
+  <rect x="4" y="{{ 40 | minus: height }}" width="8" height="{{ height }}" rx="2" fill="currentColor"></rect>
+</svg>
+{% endtemplate %}
