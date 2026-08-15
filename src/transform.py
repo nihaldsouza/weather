@@ -1,3 +1,5 @@
+from datetime import datetime
+
 WMO_CONDITIONS = {
     0: "Clear sky",
     1: "Mainly clear",
@@ -29,10 +31,36 @@ WMO_CONDITIONS = {
     99: "Thunderstorm with heavy hail",
 }
 
+# Short forms for tight spaces (hourly strip in a quadrant cell)
+WMO_SHORT = {
+    0: "Sun", 1: "Sun", 2: "Cloud", 3: "Cloud",
+    45: "Fog", 48: "Fog",
+    51: "Drzl", 53: "Drzl", 55: "Drzl", 56: "Drzl", 57: "Drzl",
+    61: "Rain", 63: "Rain", 65: "Rain", 66: "Rain", 67: "Rain",
+    71: "Snow", 73: "Snow", 75: "Snow", 77: "Snow",
+    80: "Rain", 81: "Rain", 82: "Rain",
+    85: "Snow", 86: "Snow",
+    95: "Strm", 96: "Strm", 99: "Strm",
+}
+
 
 def run(input):
     current = input["current"]
     daily = input["daily"]
+    hourly = input["hourly"]
+
+    # hourly[0] is the current hour (already shown as "now"); take the next 4.
+    upcoming = []
+    for time_str, temp, code in zip(
+        hourly["time"][1:5], hourly["temperature_2m"][1:5], hourly["weather_code"][1:5]
+    ):
+        hour = datetime.strptime(time_str, "%Y-%m-%dT%H:%M")
+        label = hour.strftime("%I %p").lstrip("0")
+        upcoming.append({
+            "time": label,
+            "temp": round(temp),
+            "condition": WMO_SHORT.get(code, "—"),
+        })
 
     return {
         "location": "Burnaby, BC",
@@ -43,4 +71,5 @@ def run(input):
         "condition": WMO_CONDITIONS.get(current["weather_code"], "Unknown"),
         "high": round(daily["temperature_2m_max"][0]),
         "low": round(daily["temperature_2m_min"][0]),
+        "hourly": upcoming,
     }

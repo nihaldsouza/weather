@@ -1,24 +1,47 @@
-<div class="layout layout--col layout--center gap--large">
-  <span class="title title--large">{{ temperature }}°C</span>
-  <span class="label">{{ condition }} · Feels like {{ feels_like }}°C</span>
+<div class="layout gap--large">
+  <div class="columns">
+    <div class="column">
+      <span class="value text--mega">{{ temperature }}°C</span>
+      <span class="label">{{ condition }} · Feels like {{ feels_like }}°C</span>
+    </div>
+  </div>
 
-  <div class="columns gap--medium">
-    <div class="column">
-      <span class="label">High</span>
-      <span class="value">{{ high }}°C</span>
+  <div class="grid grid--cols-4 gap--medium">
+    <div class="item">
+      <div class="content">
+        <span class="title title--small">High</span>
+        <span class="description">{{ high }}°C</span>
+      </div>
     </div>
-    <div class="column">
-      <span class="label">Low</span>
-      <span class="value">{{ low }}°C</span>
+    <div class="item">
+      <div class="content">
+        <span class="title title--small">Low</span>
+        <span class="description">{{ low }}°C</span>
+      </div>
     </div>
-    <div class="column">
-      <span class="label">Humidity</span>
-      <span class="value">{{ humidity }}%</span>
+    <div class="item">
+      <div class="content">
+        <span class="title title--small">Humidity</span>
+        <span class="description">{{ humidity }}%</span>
+      </div>
     </div>
-    <div class="column">
-      <span class="label">Wind</span>
-      <span class="value">{{ wind_speed }} km/h</span>
+    <div class="item">
+      <div class="content">
+        <span class="title title--small">Wind</span>
+        <span class="description">{{ wind_speed }} km/h</span>
+      </div>
     </div>
+  </div>
+
+  <div class="grid grid--cols-4 gap--medium">
+    {% for h in hourly %}
+    <div class="item">
+      <div class="content">
+        <span class="title title--small">{{ h.time }}</span>
+        <span class="description">{{ h.condition }} · {{ h.temp }}°</span>
+      </div>
+    </div>
+    {% endfor %}
   </div>
 </div>
 

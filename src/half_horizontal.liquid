@@ -1,6 +1,21 @@
-<div class="layout layout--col layout--center gap--small">
-  <span class="title title--large">{{ temperature }}°C</span>
-  <span class="label">{{ condition }} · H {{ high }}° L {{ low }}°</span>
+<div class="layout gap--medium">
+  <div class="columns">
+    <div class="column">
+      <span class="value text--xxlarge">{{ temperature }}°C</span>
+      <span class="label">{{ condition }} · H {{ high }}° L {{ low }}°</span>
+    </div>
+  </div>
+
+  <div class="grid grid--cols-4 gap--small">
+    {% for h in hourly %}
+    <div class="item">
+      <div class="content">
+        <span class="title title--small">{{ h.time }}</span>
+        <span class="description">{{ h.temp }}°</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
 <div class="title_bar">
