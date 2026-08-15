@@ -58,20 +58,35 @@ WMO_ICON = {
 }
 
 
+UV_CATEGORY = [
+    (3, "Low"),
+    (6, "Moderate"),
+    (8, "High"),
+    (11, "Very High"),
+]
+
+
+def uv_category(uv_index):
+    for threshold, label in UV_CATEGORY:
+        if uv_index < threshold:
+            return label
+    return "Extreme"
+
+
 def run(input):
     current = input["current"]
     daily = input["daily"]
     hourly = input["hourly"]
 
-    # hourly[0] is the current hour (already shown as "now"); take the next 4.
-    upcoming_temps = [round(t) for t in hourly["temperature_2m"][1:5]]
+    # hourly[0] is the current hour (already shown as "now"); take the next 8.
+    upcoming_temps = [round(t) for t in hourly["temperature_2m"][1:9]]
     temp_min, temp_max = min(upcoming_temps), max(upcoming_temps)
     temp_range = temp_max - temp_min or 1  # avoid div-by-zero when temps are flat
     bar_min, bar_max = 6, 24  # px, for the quadrant hourly bar chart
 
     upcoming = []
     for time_str, temp, code in zip(
-        hourly["time"][1:5], hourly["temperature_2m"][1:5], hourly["weather_code"][1:5]
+        hourly["time"][1:9], hourly["temperature_2m"][1:9], hourly["weather_code"][1:9]
     ):
         hour = datetime.strptime(time_str, "%Y-%m-%dT%H:%M")
         label = hour.strftime("%I %p").lstrip("0")
@@ -87,6 +102,22 @@ def run(input):
             "bar_height": bar_height,
         })
 
+    # daily["time"][0] is today; take the next 6 days.
+    daily_forecast = []
+    for time_str, day_max, day_min, code in zip(
+        daily["time"][1:7],
+        daily["temperature_2m_max"][1:7],
+        daily["temperature_2m_min"][1:7],
+        daily["weather_code"][1:7],
+    ):
+        day = datetime.strptime(time_str, "%Y-%m-%d")
+        daily_forecast.append({
+            "day": day.strftime("%a"),
+            "high": round(day_max),
+            "low": round(day_min),
+            "icon": WMO_ICON.get(code, "cloud"),
+        })
+
     return {
         "location": "Burnaby, BC",
         "temperature": round(current["temperature_2m"]),
@@ -98,4 +129,7 @@ def run(input):
         "high": round(daily["temperature_2m_max"][0]),
         "low": round(daily["temperature_2m_min"][0]),
         "hourly": upcoming,
+        "daily": daily_forecast,
+        "uv_index": round(daily["uv_index_max"][0]),
+        "uv_category": uv_category(daily["uv_index_max"][0]),
     }

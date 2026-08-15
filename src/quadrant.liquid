@@ -1,22 +1,37 @@
-<div class="layout layout--col gap--small">
-  <div class="columns gap--medium">
+<div class="layout layout--col gap--distribute">
+  <div class="columns gap--small">
     <div class="column w--auto">
-      {% render "weather_icon", icon: icon, size: 48 %}
-    </div>
-    <div class="column">
+      <span class="label">{{ location }}</span>
       <span class="value text--xxlarge">{{ temperature }}°</span>
-      <span class="label">{{ condition }} · L{{ low }}° H{{ high }}°</span>
+      <span class="label">L {{ low }}° H {{ high }}°</span>
+    </div>
+    <div class="column"></div>
+    <div class="column w--auto" style="margin-right: 14px">
+      <div class="self--end">{% render "weather_icon", icon: icon, size: 48 %}</div>
+      <span class="label self--end">{{ condition }}</span>
+      <span class="label self--end">UV {{ uv_index }} · {{ uv_category }}</span>
     </div>
   </div>
 
-  <div class="grid grid--cols-4 gap--small">
+  <div class="grid grid--cols-8 gap--xsmall">
     {% for h in hourly %}
     <div class="item">
       <div class="content">
-        {% render "weather_bar", height: h.bar_height %}
-        {% render "weather_icon", icon: h.icon, size: 22 %}
+        {% render "weather_icon", icon: h.icon, size: 20 %}
         <span class="title title--small">{{ h.time }}</span>
         <span class="description">{{ h.temp }}°</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="grid grid--cols-6 gap--xsmall">
+    {% for d in daily %}
+    <div class="item">
+      <div class="content">
+        <span class="title title--small">{{ d.day }}</span>
+        {% render "weather_icon", icon: d.icon, size: 20 %}
+        <span class="description">{{ d.low }}/{{ d.high }}°</span>
       </div>
     </div>
     {% endfor %}
