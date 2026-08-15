@@ -15,6 +15,24 @@ jobs:
       - run: gem install trmnl_preview
       - run: trmnlp lint
 
+  preview:
+    needs: lint
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0"
+      - run: gem install trmnl_preview
+      - run: trmnlp serve &
+        shell: bash
+      - run: sleep 2 && python3 .github/scripts/gen_preview.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'docs: refresh demo GIF [skip ci]'
+          file_pattern: docs/demo.gif
+
   push:
     needs: lint
     if: github.ref == 'refs/heads/main'
